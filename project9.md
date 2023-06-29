@@ -1,5 +1,10 @@
 # CONTINUOUS INTEGRATION PIPELINE FOR TOOLING WEBSITE
 
+## Introduction
+Jenkins is a Java-based open-source Continuous Integration server that facilitates the automation of various tasks involved in the Continuous Integration process. It provides support for the entire software development life cycle, including building, testing, documenting, and deploying software. With Jenkins, developers can orchestrate a sequence of actions to streamline the development process and ensure efficient collaboration among team members. Its flexibility and extensive plugin ecosystem make it a popular choice for automating software development workflows.
+
+![jenkins](./images/jenkinspipe.PNG)
+
 
 
 
@@ -42,7 +47,7 @@ The github has been forked to my repo. On the github repository, I will create a
 
 ![webhook](./images/webhookconfig1.PNG)
 
-## Creating Job and Configuring GIT Based Push Trigger
+## Creating a Job and Configuring GIT Based Push Trigger
 
 A new freestyle job is created. The job will be configured to build from the git repo that was forked previously. The repo is public so there will be no need for credentials, and the branch (master) will be specified. After the configuration, the code will be built manually.
 
@@ -55,7 +60,7 @@ Now we need to add some automation by enabling the jenkins server build automati
 
 ![webhoo](./images/buildtriggers.PNG)
 
-### configure "Post-build Actions" to archive all the files 
+### Configure "Post-build Actions" to archive all the files 
 The files resulted from a build are called artifacts.
 
 ![auto](./images/post-buildactions.PNG)
@@ -76,15 +81,13 @@ Firstly, the plugin 'Publish via SSH' is installed. The plugin allows created ar
 
 ![plugin](./images/publishoversshplugin.PNG)
 
-Configure the job to copy artifacts over to NFS server. On main dashboard select "Manage Jenkins" and choose "Configure System" menu item.
+Configure the job to copy artifacts over to NFS server.
 
-Scroll down to Publish over SSH plugin configuration section and configure it to be able to connect to the NFS server:
+Provide a private key (content of .pem file that you use to connect to NFS server via SSH)
 
-Provide a private key (content of .pem file that you use to connect to NFS server via SSH/Putty)
-
-Hostname – can be private IP address of NFS server
-Username – ec2-user (since NFS server is based on EC2 with RHEL 8)
-Remote directory – /mnt/apps since our Web Servers use it as a mointing point to retrieve files from the NFS server
+* Hostname – private IP address of NFS server
+* Username – ec2-user (since NFS server is based on EC2 with RHEL 9)
+* Remote directory – /mnt/apps since our Web Servers use it as a mointing point to retrieve files from the NFS server
 
 Test the configuration and make sure the connection returns Success. Remember, that TCP port 22 on NFS server must be open to receive SSH connections.
 
